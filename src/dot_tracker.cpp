@@ -1,8 +1,10 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-
-#include <opencv2/opencv.hpp>
+#include "geometry_msgs/PoseStamped.h"
+#include "opencv2/opencv.hpp"
 #include "track_helper.h"
+#include "tf/transform_datatypes.h"
+#include "tf/transform_broadcaster.h"
 
 using namespace std;
 using namespace cv;
@@ -31,12 +33,13 @@ int main(int argc, char **argv)
 	cv::namedWindow("marker tracking");
 	while (ros::ok())
 	{
-		Mat img, img_track;
+		Mat img, img_track, PoseMat;
 		if (!vid_cap.read(img))
 			break;
 
 		//resize(img, img, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR);	for re-scale video
-		track_helper.process(img, img_track);
+		track_helper.process(img, img_track, PoseMat);
+		cout << "PoseMat = "<< endl << " "  << PoseMat << endl << endl;
 
 		imshow("marker tracking", img_track);
 		char key = waitKey(5);

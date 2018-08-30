@@ -32,7 +32,7 @@ public:
 
 
     // Start process timer
-    void process(const cv::Mat &img, cv::Mat &out_img);
+    void process(const cv::Mat &img, cv::Mat &out_img, cv::Mat &out_cHp);
 
     cv::Mat current_cHp;
 

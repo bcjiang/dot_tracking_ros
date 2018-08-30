@@ -17,7 +17,7 @@ set(OpenCV_STATIC OFF)
 
 
 # Find OpenCV
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs geometry_msgs tf)
 find_package(OpenCV REQUIRED)
 include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 

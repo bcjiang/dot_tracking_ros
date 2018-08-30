@@ -185,7 +185,7 @@ TrackHelper::~TrackHelper()
 }
 
 
-void TrackHelper::process(const cv::Mat &img, cv::Mat &out_img)
+void TrackHelper::process(const cv::Mat &img, cv::Mat &out_img, cv::Mat &out_cHp)
 {
 	m_img_track = img;
 
@@ -334,6 +334,8 @@ void TrackHelper::process(const cv::Mat &img, cv::Mat &out_img)
 
 				draw_rect(cHp_1, m_img_track, cv::Scalar(255, 0, 0));
 				draw_rect(cHp_2, m_img_track, cv::Scalar(0, 0, 255));
+
+				out_cHp = cHp_1;
 			}
 			else
 			{
@@ -344,6 +346,8 @@ void TrackHelper::process(const cv::Mat &img, cv::Mat &out_img)
  				aux = current_cHp.colRange(3,4).rowRange(0,3);
  				tvec.copyTo(aux);
 				draw_rect(current_cHp, m_img_track);
+
+				out_cHp = current_cHp;
 			}
 			static_cast<TrackerKeydot*>(tracker)->drawKeydots(m_img_track);
 		}
