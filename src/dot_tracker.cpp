@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	std_msgs::String msg;
     msg.data = "hello world: dot_marker_pose" ;
 
-	string video_filename = "/home/ziri/catkin_ws/src/dot_tracking_ros/src/XDO5O.mp4";	//hybrid_test_video / circular_test_video
+	string video_filename = "/home/ziri/Downloads/XDO5O.mp4";	//hybrid_test_video / circular_test_video
     VideoCapture vid_cap (video_filename);
 
 	if(!vid_cap.isOpened())
