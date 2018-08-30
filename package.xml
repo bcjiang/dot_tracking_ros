@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dot_tracking_ros</name>
+  <version>0.1.0</version>
+  <description>
+    A ros wrapper for the dot pattern tracking package orginally created here: https://github.com/lz89/hybrid_marker_track
+  </description>
+  <maintainer email="baichuan@jhu.edu">Baichuan Jiang</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>std_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>tf</depend>
+</package>
