@@ -15,10 +15,7 @@ int main(int argc, char **argv)
 
 	ros::NodeHandle nh;
 
-	ros::Publisher pose_pub = nh.advertise<std_msgs::String>("dot_marker_pose", 100);
-
-	std_msgs::String msg;
-    msg.data = "hello world: dot_marker_pose" ;
+	ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("dot_marker_pose", 100);
 
 	string video_filename = "/home/ziri/Downloads/XDO5O.mp4";	//hybrid_test_video / circular_test_video
     VideoCapture vid_cap (video_filename);
@@ -39,14 +36,29 @@ int main(int argc, char **argv)
 
 		//resize(img, img, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR);	for re-scale video
 		track_helper.process(img, img_track, PoseMat);
-		cout << "PoseMat = "<< endl << " "  << PoseMat << endl << endl;
+		// cout << "PoseMat = "<< endl << " "  << PoseMat << endl << endl;
 
 		imshow("marker tracking", img_track);
 		char key = waitKey(5);
 		if (key == 27)
 			break;
 
-		pose_pub.publish(msg);
+		// Convert to PoseStamped msg
+		ros::Time curr_stamp(ros::Time::now());
+		tf::Matrix3x3 tf_rot(PoseMat.at<double>(0,0), PoseMat.at<double>(0,1), PoseMat.at<double>(0,2),
+                         PoseMat.at<double>(1,0), PoseMat.at<double>(1,1), PoseMat.at<double>(1,2),
+                         PoseMat.at<double>(2,0), PoseMat.at<double>(2,1), PoseMat.at<double>(2,2));
+		tf::Vector3 tf_pos(PoseMat.at<double>(0,3), PoseMat.at<double>(1,3), PoseMat.at<double>(2,3));
+		tf::Transform transform = tf::Transform(tf_rot, tf_pos);
+
+		// tf::StampedTransform stampedTransform(transform, curr_stamp,
+  //                                                 "world", "dot_marker_frame");
+
+		geometry_msgs::PoseStamped poseMsg;
+        tf::poseTFToMsg(transform, poseMsg.pose);
+        poseMsg.header.frame_id = "dot_marker_frame";
+        poseMsg.header.stamp = curr_stamp;
+        pose_pub.publish(poseMsg);
 	}
 
 	vid_cap.release();
